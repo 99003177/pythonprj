@@ -1,0 +1,121 @@
+import re
+
+
+class library:
+    def __init__(self, list, name):
+        self.booklist = list
+        self.name = name
+        self.lendbookdict = {}
+
+
+class user(library):
+    def __init__(self, list, name):
+        library.__init__(self, list, name)
+
+    def displaybooks(self):
+        print(f"we have following books:{self.name}")
+        for book in self.booklist:
+            print(book)
+
+    def lendbook(self, user, book):
+        if book not in self.lendbookdict.keys():
+            self.lendbookdict.update({book: user})
+            print("You can take the book now")
+        else:
+            print(f"Book is already being used by {self.lendbookdict[book]}")
+
+    def returnbook(self, book):
+        self.lendbookdict.pop(book)
+
+
+class admin(user):
+    def __init__(self, list, name):
+        user.__init__(self, list, name)
+
+    def addbook(self, book):
+        self.booklist.append(book)
+        print("Book has been added to the book list")
+
+    def deletebook(self, book):
+        self.booklist.remove(book)
+if __name__ == '__main__':
+    obj1 = admin(['Python', 'Harry potter', 'C', 'C#', 'C++ primer'], "LTTS")
+    pattern = r"1. Admin Mode"
+    sequence = "1. Admin Mode"
+    result = re.match(pattern, sequence)
+    print(result)
+    print("1. Admin Mode")
+    print("2. User Mode")
+    while(True):
+        Admin_user_mode = input("Enter your mode")
+        if Admin_user_mode == "1":
+            password = input("enter your password")
+            if password == "1234":
+                while(True):
+                    print("Welcome to the LTTS library. Enter your choice")
+                    print("1. Add a Book")
+                    print("2. Delete a Book")
+                    user_choice1 = input()
+                    if user_choice1 not in ['1', '2']:
+                        print("Please enter a valid option")
+                        continue
+                    else:
+                        user_choice1 = int(user_choice1)
+                        if user_choice1 == 1:
+                            book = input("Name of the book you want to add:")
+                            obj1.addbook(book)
+                        elif user_choice1 == 2:
+                            book = input("Name of the book you want to del:")
+                            obj1.deletebook(book)
+                        else:
+                            print("Not a valid option")
+
+                        print("Press q to quit and c to continue")
+                        user_choice2 = ""
+                        user_choice2 = input()
+                        if user_choice2 == "q":
+                            break
+
+                        elif user_choice2 == "c":
+                            continue
+
+                else:
+                    print("Incorrect Password")
+        elif Admin_user_mode == "2":
+            while(True):
+                print("Welcome to the LTTS library. Enter your choice")
+                print("1. display books")
+                print("2. lend a book")
+                print("3. return a book")
+                user_choice3 = input()
+                if user_choice3 not in ['1', '2', '3']:
+                    print("Please enter a valid option")
+                    continue
+
+                else:
+                    user_choice3 = int(user_choice3)
+                if user_choice3 == 1:
+                    obj1.displaybooks()
+
+                elif user_choice3 == 2:
+                    user = input("Enter your name")
+                    number = int(input("No.of books you want to take"))
+                    for n in range(number):
+                        book = input("Name of the book you want to lend:")
+                        obj1.lendbook(user, book)
+
+                elif user_choice3 == 3:
+                    book = input("Name of the book you want to return:")
+                    obj1.returnbook(book)
+                else:
+                    print("Not a valid option")
+                print("Press q to quit and c to continue")
+                user_choice4 = ""
+                user_choice4 = input()
+                if user_choice4 == "q":
+                    break
+
+                elif user_choice4 == "c":
+                    continue
+        else:
+            print("Invalid Mode")
